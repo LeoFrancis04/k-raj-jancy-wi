@@ -1,0 +1,748 @@
+/* ═══════════════════════════════════════════════════════════
+   RAJ ♥ JENCY — DIGITAL WEDDING INVITATION
+   Aesthetic: Luxury Gothic Romance
+   Palette: Deep Amethyst · Rose Gold · Parchment Cream
+   ═══════════════════════════════════════════════════════════ */
+
+   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&family=Great+Vibes&display=swap');
+
+   /* ── Design Tokens ─────────────────────────────────────── */
+   :root {
+     --bg-1: #0E0018;
+     --bg-2: #1B0332;
+     --bg-3: #2B0650;
+     --purple: #7B1FA2;
+     --rose: #C0407A;
+     --gold: #D4A843;
+     --gold-lt: #F0CC7A;
+     --cream: #FDF5E6;
+     --dim: rgba(253, 245, 230, 0.65);
+     --dimmer: rgba(253, 245, 230, 0.38);
+     --glass: rgba(255, 255, 255, 0.055);
+     --glass-b: rgba(212, 168, 67, 0.22);
+     --glass-b2: rgba(212, 168, 67, 0.38);
+   
+     /* Shadows */
+     --shadow-gold: 0 0 40px rgba(212, 168, 67, 0.15);
+     --shadow-rose: 0 0 40px rgba(192, 64, 122, 0.15);
+   }
+   
+   /* ── Reset ─────────────────────────────────────────────── */
+   *, *::before, *::after {
+     margin: 0; padding: 0;
+     box-sizing: border-box;
+   }
+   
+   html, body {
+     width: 100%; height: 100%;
+     overflow: hidden;
+     background: var(--bg-1);
+   }
+   
+   body {
+     font-family: 'Montserrat', sans-serif;
+     color: var(--cream);
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+   }
+   
+   /* ── Petal Canvas (fixed behind everything) ────────────── */
+   #petalCanvas {
+     position: fixed;
+     inset: 0;
+     width: 100%;
+     height: 100%;
+     pointer-events: none;
+     z-index: 0;
+   }
+   
+   /* ── Progress Dots ─────────────────────────────────────── */
+   .progress-nav {
+     position: fixed;
+     right: 14px;
+     top: 50%;
+     transform: translateY(-50%);
+     display: flex;
+     flex-direction: column;
+     gap: 9px;
+     z-index: 200;
+   }
+   
+   .dot {
+     width: 7px;
+     height: 7px;
+     border-radius: 50%;
+     background: var(--dimmer);
+     border: 1px solid rgba(253, 245, 230, 0.3);
+     cursor: pointer;
+     transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+   }
+   
+   .dot.active {
+     background: var(--gold);
+     border-color: var(--gold);
+     transform: scale(1.5);
+     box-shadow: 0 0 8px var(--gold);
+   }
+   
+   .dot:hover:not(.active) {
+     background: var(--dim);
+     transform: scale(1.2);
+   }
+   
+   /* ── Scroll Container ──────────────────────────────────── */
+   .scroll-container {
+     position: relative;
+     height: 100vh;
+     overflow-y: scroll;
+     scroll-snap-type: y mandatory;
+     scroll-behavior: smooth;
+     z-index: 1;
+     /* Hide scrollbar */
+     scrollbar-width: none;
+     -ms-overflow-style: none;
+   }
+   .scroll-container::-webkit-scrollbar { display: none; }
+   
+   /* ── Slides ────────────────────────────────────────────── */
+   .slide {
+     height: 100vh;
+     width: 100%;
+     scroll-snap-align: start;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     position: relative;
+     overflow: hidden;
+     padding: 20px 16px;
+   }
+   
+   /* Slide gradient backgrounds — each slightly different */
+   #s0 { background: linear-gradient(155deg, #0E0018 0%, #2B0650 55%, #180030 100%); }
+   #s1 { background: linear-gradient(155deg, #1B0332 0%, #350965 60%, #200040 100%); }
+   #s2 { background: linear-gradient(155deg, #200040 0%, #1B0332 55%, #2B0650 100%); }
+   #s3 { background: linear-gradient(155deg, #180030 0%, #380A72 55%, #150025 100%); }
+   #s4 { background: linear-gradient(155deg, #150025 0%, #2B0650 55%, #1B0332 100%); }
+   #s5 { background: linear-gradient(155deg, #1B0332 0%, #330060 55%, #0E0018 100%); }
+   #s6 { background: linear-gradient(155deg, #0E0018 0%, #2B0650 55%, #1B0332 100%); }
+   
+   /* ── Glow Blobs (decorative) ───────────────────────────── */
+   .glow {
+     position: absolute;
+     border-radius: 50%;
+     pointer-events: none;
+     filter: blur(60px);
+   }
+   .g1 { width: 280px; height: 280px; background: radial-gradient(circle, rgba(123,31,162,0.22) 0%, transparent 70%); top: -60px; right: -40px; }
+   .g2 { width: 220px; height: 220px; background: radial-gradient(circle, rgba(192,64,122,0.16) 0%, transparent 70%); bottom: -40px; left: -20px; }
+   .g3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(123,31,162,0.18) 0%, transparent 70%); top: -80px; left: -60px; }
+   .g4 { width: 240px; height: 240px; background: radial-gradient(circle, rgba(212,168,67,0.09) 0%, transparent 70%); bottom: -50px; right: -30px; }
+   
+   /* ── Content Wrapper ───────────────────────────────────── */
+   .content {
+     max-width: 420px;
+     width: 100%;
+     text-align: center;
+     position: relative;
+     z-index: 2;
+   }
+   
+   /* ── Reveal Animation (via IntersectionObserver) ───────── */
+   .reveal {
+     opacity: 0;
+     transform: translateY(36px);
+     transition: opacity 0.75s ease, transform 0.75s ease;
+   }
+   .reveal.visible {
+     opacity: 1;
+     transform: translateY(0);
+   }
+   
+   /* ════════════════════════════════════════
+      SLIDE 1 — COVER
+   ════════════════════════════════════════ */
+   .cover-content > * {
+     opacity: 0;
+   }
+   .cover-content .cover-cross   { animation: fadeIn 0.9s 0.2s forwards; }
+   .cover-content .grace-line    { animation: fadeInDown 0.8s 0.5s forwards; }
+   .cover-content .couple-block  { animation: fadeIn 1s 0.8s forwards; }
+   .cover-content .date-seal     { animation: fadeInUp 0.8s 1.3s forwards; }
+   
+   .cover-cross {
+     font-size: 1.8rem;
+     color: var(--gold);
+     margin-bottom: 14px;
+     text-shadow: 0 0 20px rgba(212,168,67,0.5);
+   }
+   
+   .grace-line {
+     font-size: 0.68rem;
+     letter-spacing: 3.5px;
+     text-transform: uppercase;
+     color: var(--gold-lt);
+     margin-bottom: 24px;
+   }
+   
+   .couple-block {
+     margin-bottom: 30px;
+   }
+   
+   .script-name {
+     display: block;
+     font-family: 'Great Vibes', cursive;
+     font-size: 5.5rem;
+     line-height: 1;
+     color: var(--cream);
+     text-shadow: 0 2px 30px rgba(212,168,67,0.35), 0 0 60px rgba(123,31,162,0.3);
+   }
+   
+   .heart-row {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     gap: 10px;
+     margin: 4px 0;
+   }
+   .hr-line {
+     flex: 1;
+     max-width: 70px;
+     height: 1px;
+     background: linear-gradient(90deg, transparent, var(--gold), transparent);
+   }
+   .hr-heart {
+     color: var(--rose);
+     font-size: 1.4rem;
+     filter: drop-shadow(0 0 8px rgba(192,64,122,0.6));
+   }
+   
+   .date-seal { margin-top: 6px; }
+   
+   .std-label {
+     font-size: 0.68rem;
+     letter-spacing: 3px;
+     text-transform: uppercase;
+     color: var(--dim);
+     margin-bottom: 10px;
+   }
+   
+   .big-date {
+     font-family: 'Cormorant Garamond', serif;
+     font-size: 2.8rem;
+     font-weight: 600;
+     color: var(--gold);
+     letter-spacing: 8px;
+     text-shadow: var(--shadow-gold);
+   }
+   
+   .day-text {
+     font-size: 0.75rem;
+     letter-spacing: 4px;
+     text-transform: uppercase;
+     color: var(--dim);
+     margin-top: 8px;
+   }
+   
+   /* Swipe hint */
+   .swipe-hint {
+     position: absolute;
+     bottom: 32px;
+     left: 50%;
+     transform: translateX(-50%);
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 5px;
+     font-size: 0.65rem;
+     letter-spacing: 2.5px;
+     text-transform: uppercase;
+     color: var(--dimmer);
+     opacity: 0;
+     animation: fadeIn 1s 2.2s forwards;
+     z-index: 2;
+   }
+   .sh-arrow { animation: bounceDown 2s 2.5s infinite; font-size: 1rem; }
+   
+   /* ════════════════════════════════════════
+      SLIDE 2 — INVITATION
+   ════════════════════════════════════════ */
+   .ornament {
+     font-size: 2rem;
+     color: var(--gold);
+     display: block;
+     margin-bottom: 16px;
+     opacity: 0.8;
+   }
+   
+   .bible-verse {
+     font-family: 'Cormorant Garamond', serif;
+     font-style: italic;
+     font-size: 1rem;
+     color: var(--dim);
+     line-height: 1.8;
+     margin-bottom: 6px;
+     padding: 0 8px;
+     border-left: none;
+   }
+   .bible-verse cite {
+     display: block;
+     font-size: 0.78rem;
+     color: var(--gold);
+     font-style: normal;
+     margin-top: 6px;
+     letter-spacing: 1px;
+   }
+   
+   .invite-line {
+     font-family: 'Cormorant Garamond', serif;
+     font-style: italic;
+     font-size: 1.05rem;
+     color: var(--dim);
+     line-height: 1.8;
+     margin: 20px 0 24px;
+   }
+   
+   .parents-row {
+     display: flex;
+     align-items: stretch;
+     justify-content: center;
+     gap: 0;
+     border: 1px solid var(--glass-b);
+     border-radius: 14px;
+     background: var(--glass);
+     backdrop-filter: blur(12px);
+     overflow: hidden;
+   }
+   
+   .parent-col {
+     flex: 1;
+     padding: 18px 14px;
+   }
+   
+   .pcol-tag {
+     font-size: 0.6rem;
+     letter-spacing: 2.5px;
+     text-transform: uppercase;
+     color: var(--gold);
+     margin-bottom: 12px;
+   }
+   
+   .pcol-name {
+     font-family: 'Cormorant Garamond', serif;
+     font-size: 1.2rem;
+     font-weight: 600;
+     color: var(--cream);
+     line-height: 1.3;
+   }
+   
+   .pcol-amp {
+     color: var(--gold);
+     font-size: 0.9rem;
+     margin: 4px 0;
+   }
+   
+   .pcol-loc {
+     font-size: 0.72rem;
+     color: var(--dim);
+     margin-top: 6px;
+     letter-spacing: 0.5px;
+   }
+   
+   .pcol-vline {
+     width: 1px;
+     background: linear-gradient(to bottom, transparent, var(--gold-lt), transparent);
+     flex-shrink: 0;
+   }
+   
+   /* ════════════════════════════════════════
+      SLIDE 3 — THE COUPLE
+   ════════════════════════════════════════ */
+   .script-title {
+     font-family: 'Great Vibes', cursive;
+     font-size: 3rem;
+     color: var(--gold);
+     margin-bottom: 20px;
+     text-shadow: 0 0 20px rgba(212,168,67,0.3);
+   }
+   
+   .person-card {
+     background: var(--glass);
+     border: 1px solid var(--glass-b);
+     border-radius: 14px;
+     padding: 18px 22px;
+     backdrop-filter: blur(12px);
+     text-align: center;
+     transition: border-color 0.3s ease;
+   }
+   .person-card:hover { border-color: var(--glass-b2); }
+   
+   .role-tag {
+     display: inline-block;
+     font-size: 0.62rem;
+     letter-spacing: 3px;
+     text-transform: uppercase;
+     color: var(--gold);
+     border: 1px solid rgba(212,168,67,0.4);
+     padding: 3px 14px;
+     border-radius: 20px;
+     margin-bottom: 12px;
+   }
+   .bride-role { color: var(--rose); border-color: rgba(192,64,122,0.4); }
+   
+   .person-name {
+     font-family: 'Cormorant Garamond', serif;
+     font-size: 1.9rem;
+     font-weight: 700;
+     color: var(--cream);
+     line-height: 1.1;
+     margin-bottom: 6px;
+   }
+   
+   .person-quals {
+     font-size: 0.78rem;
+     color: var(--gold-lt);
+     letter-spacing: 0.5px;
+     margin-bottom: 8px;
+   }
+   
+   .person-lineage {
+     font-size: 0.75rem;
+     color: var(--dim);
+     line-height: 1.7;
+   }
+   
+   .heart-conn {
+     color: var(--rose);
+     font-size: 1.8rem;
+     display: block;
+     margin: 12px 0;
+     filter: drop-shadow(0 0 8px rgba(192,64,122,0.5));
+   }
+   
+   /* ════════════════════════════════════════
+      SLIDE 4 — CEREMONY
+   ════════════════════════════════════════ */
+   .venue-card {
+     background: var(--glass);
+     border: 1px solid var(--glass-b);
+     border-radius: 14px;
+     padding: 20px 22px;
+     backdrop-filter: blur(12px);
+     margin-bottom: 14px;
+     text-align: center;
+   }
+   
+   .vc-icon {
+     font-size: 2rem;
+     display: block;
+     margin-bottom: 10px;
+   }
+   
+   .vc-name {
+     font-family: 'Cormorant Garamond', serif;
+     font-size: 1.4rem;
+     font-weight: 600;
+     color: var(--gold);
+     margin-bottom: 6px;
+   }
+   
+   .vc-loc {
+     font-size: 0.8rem;
+     color: var(--dim);
+     margin-bottom: 14px;
+     line-height: 1.5;
+   }
+   
+   .vc-sep {
+     height: 1px;
+     background: linear-gradient(90deg, transparent, var(--glass-b2), transparent);
+     margin-bottom: 14px;
+   }
+   
+   .td-grid {
+     display: grid;
+     grid-template-columns: 1fr 1px 1fr;
+     gap: 0 12px;
+     align-items: center;
+   }
+   
+   .td-col {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 5px;
+   }
+   
+   .td-label {
+     font-size: 0.6rem;
+     letter-spacing: 2px;
+     text-transform: uppercase;
+     color: var(--gold);
+   }
+   
+   .td-val {
+     font-family: 'Cormorant Garamond', serif;
+     font-size: 0.95rem;
+     font-weight: 600;
+     color: var(--cream);
+     line-height: 1.3;
+   }
+   
+   .td-vline {
+     width: 1px;
+     height: 44px;
+     background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+     justify-self: center;
+   }
+   
+   .recep { }
+   .recep-note {
+     font-size: 0.78rem;
+     color: var(--dim);
+     font-style: italic;
+     margin-top: 8px;
+   }
+   
+   /* ════════════════════════════════════════
+      SLIDE 5 — CLERGY
+   ════════════════════════════════════════ */
+   .clergy-intro {
+     font-family: 'Cormorant Garamond', serif;
+     font-style: italic;
+     font-size: 0.95rem;
+     color: var(--dim);
+     line-height: 1.8;
+     margin-bottom: 20px;
+   }
+   .clergy-intro strong { color: var(--gold-lt); font-style: normal; }
+   
+   .clergy-list {
+     display: flex;
+     flex-direction: column;
+     gap: 8px;
+   }
+   
+   .clergy-item {
+     background: var(--glass);
+     border: 1px solid var(--glass-b);
+     border-radius: 10px;
+     padding: 11px 16px;
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     gap: 12px;
+     backdrop-filter: blur(8px);
+     transition: border-color 0.3s;
+   }
+   .clergy-item:hover { border-color: var(--glass-b2); }
+   
+   .ci-name {
+     font-family: 'Cormorant Garamond', serif;
+     font-size: 0.98rem;
+     font-weight: 600;
+     color: var(--cream);
+     text-align: left;
+     flex: 1;
+   }
+   
+   .ci-role {
+     font-size: 0.65rem;
+     color: var(--gold);
+     text-align: right;
+     flex-shrink: 0;
+     max-width: 110px;
+     line-height: 1.5;
+   }
+   .ci-role em { color: var(--rose); font-style: normal; }
+   
+   .highlight-ci {
+     border-color: rgba(212,168,67,0.4);
+     background: rgba(212,168,67,0.06);
+   }
+   
+   /* ════════════════════════════════════════
+      SLIDE 6 — FAMILY
+   ════════════════════════════════════════ */
+   .fam-grid {
+     display: grid;
+     grid-template-columns: 1fr 1px 1fr;
+     gap: 0 16px;
+     background: var(--glass);
+     border: 1px solid var(--glass-b);
+     border-radius: 14px;
+     padding: 18px 14px;
+     backdrop-filter: blur(12px);
+     text-align: left;
+   }
+   
+   .fam-col { }
+   
+   .fam-title {
+     font-size: 0.62rem;
+     letter-spacing: 2.5px;
+     text-transform: uppercase;
+     color: var(--gold);
+     text-align: center;
+     margin-bottom: 16px;
+     padding-bottom: 10px;
+     border-bottom: 1px solid rgba(212,168,67,0.15);
+   }
+   
+   .fam-vline {
+     width: 1px;
+     background: linear-gradient(to bottom, transparent, rgba(212,168,67,0.3), transparent);
+     justify-self: center;
+   }
+   
+   .fe {
+     margin-bottom: 12px;
+   }
+   
+   .fe-role {
+     font-size: 0.6rem;
+     letter-spacing: 1.5px;
+     text-transform: uppercase;
+     color: var(--gold-lt);
+     margin-bottom: 3px;
+   }
+   
+   .fe-name {
+     font-family: 'Cormorant Garamond', serif;
+     font-size: 0.88rem;
+     font-weight: 500;
+     color: var(--cream);
+     line-height: 1.5;
+   }
+   
+   /* ════════════════════════════════════════
+      SLIDE 7 — CLOSING
+   ════════════════════════════════════════ */
+   .closing-script {
+     font-family: 'Great Vibes', cursive;
+     font-size: 3rem;
+     color: var(--gold);
+     line-height: 1.2;
+     margin-bottom: 18px;
+     text-shadow: 0 0 20px rgba(212,168,67,0.3);
+   }
+   
+   .closing-sub {
+     font-family: 'Cormorant Garamond', serif;
+     font-style: italic;
+     font-size: 1rem;
+     color: var(--dim);
+     line-height: 1.8;
+     margin-bottom: 24px;
+   }
+   
+   .contact-pill {
+     display: inline-flex;
+     align-items: center;
+     gap: 6px;
+     background: var(--glass);
+     border: 1px solid var(--glass-b2);
+     padding: 10px 26px;
+     border-radius: 30px;
+     font-size: 1rem;
+     font-weight: 500;
+     color: var(--gold-lt);
+     text-decoration: none;
+     margin-bottom: 24px;
+     backdrop-filter: blur(8px);
+     transition: background 0.3s, transform 0.2s;
+   }
+   .contact-pill:hover {
+     background: rgba(212,168,67,0.08);
+     transform: scale(1.03);
+   }
+   .contact-pill:active { transform: scale(0.97); }
+   
+   .closing-fams {
+     display: flex;
+     gap: 16px;
+     justify-content: center;
+     align-items: flex-start;
+     flex-wrap: wrap;
+     margin-bottom: 24px;
+   }
+   
+   .cf { text-align: center; max-width: 160px; }
+   .cf-name {
+     font-family: 'Cormorant Garamond', serif;
+     font-size: 0.88rem;
+     font-weight: 600;
+     color: var(--cream);
+     line-height: 1.5;
+   }
+   .cf-type {
+     font-size: 0.68rem;
+     color: var(--dim);
+     margin-top: 3px;
+   }
+   .cf-dot {
+     color: var(--gold);
+     font-size: 1.5rem;
+     align-self: center;
+   }
+   
+   .final-seal {
+     border-top: 1px solid rgba(212,168,67,0.2);
+     padding-top: 18px;
+   }
+   
+   .fs-date {
+     font-family: 'Cormorant Garamond', serif;
+     font-size: 2rem;
+     color: var(--gold);
+     letter-spacing: 5px;
+     font-weight: 600;
+   }
+   .fs-names {
+     font-family: 'Great Vibes', cursive;
+     font-size: 2rem;
+     color: var(--rose);
+     margin-top: 4px;
+     filter: drop-shadow(0 0 6px rgba(192,64,122,0.4));
+   }
+   
+   /* ═══════════════════════════════════════
+      KEYFRAME ANIMATIONS
+   ════════════════════════════════════════ */
+   @keyframes fadeIn {
+     from { opacity: 0; }
+     to   { opacity: 1; }
+   }
+   @keyframes fadeInDown {
+     from { opacity: 0; transform: translateY(-20px); }
+     to   { opacity: 1; transform: translateY(0); }
+   }
+   @keyframes fadeInUp {
+     from { opacity: 0; transform: translateY(22px); }
+     to   { opacity: 1; transform: translateY(0); }
+   }
+   @keyframes bounceDown {
+     0%, 100% { transform: translateY(0); }
+     50%       { transform: translateY(7px); }
+   }
+   
+   /* ═══════════════════════════════════════
+      RESPONSIVE — VERY SMALL PHONES
+   ════════════════════════════════════════ */
+   @media (max-height: 680px) {
+     .script-name { font-size: 4.5rem; }
+     .big-date     { font-size: 2.2rem; }
+     .script-title { font-size: 2.4rem; }
+     .closing-script { font-size: 2.4rem; }
+     .bible-verse  { font-size: 0.9rem; }
+     .parents-row  { margin-top: 8px; }
+     .clergy-list  { gap: 6px; }
+     .clergy-item  { padding: 9px 14px; }
+     .venue-card   { padding: 16px 18px; }
+     .fam-grid     { padding: 14px 12px; }
+   }
+   
+   @media (max-width: 360px) {
+     .script-name  { font-size: 4rem; }
+     .fe-name      { font-size: 0.8rem; }
+     .ci-name      { font-size: 0.9rem; }
+   }
