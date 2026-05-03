@@ -4,7 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#0E0018">
-  <title>Raj ♥ Jency — 18.05.2026</title>
+  <title>Raj ♥ Jency — Wedding Invitation · 18.05.2026</title>
+  <meta name="description" content="You are cordially invited to the wedding of E. Kulandai Raj & J. Jency on 18th May 2026.">
+
+  <!-- ═══════════════════════════════════════════════════
+       WhatsApp / iMessage / Instagram PREVIEW CARD
+       ─────────────────────────────────────────────────
+       ACTION NEEDED:
+       1. Rename the couple illustration file to: preview.jpg
+       2. Place it next to index.html in your repo folder
+       3. git add . && git commit -m "add preview" && git push
+       ─────────────────────────────────────────────────
+       The image that shows up when someone shares the link
+       on WhatsApp will be preview.jpg (the couple photo).
+  ════════════════════════════════════════════════════ -->
+  <meta property="og:type"         content="website">
+  <meta property="og:url"          content="https://k-raj-jancy-wedding-invitaion.vercel.app/">
+  <meta property="og:title"        content="Raj ♥ Jency — Wedding Invitation · 18 May 2026">
+  <meta property="og:description"  content="We joyfully invite you to celebrate our wedding on 18th May 2026 · Our Lady of Rosary Church, Eraiyur. Tap to open!">
+  <meta property="og:image"        content="https://k-raj-jancy-wedding-invitaion.vercel.app/preview.jpg">
+  <meta property="og:image:width"  content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:image"       content="https://k-raj-jancy-wedding-invitaion.vercel.app/preview.jpg">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
@@ -12,90 +35,124 @@
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════════
-     ENVELOPE OVERLAY  (shown first, removed after tap)
-     NOTE: This MUST be before the main content so z-index
-     stacking works correctly on all browsers.
-═══════════════════════════════════════════════════════ -->
-<div id="envelopeScreen">
+<!-- ═══════════════════════════════════════════════════
+     MUSIC — WHERE TO ADD IT
+     ─────────────────────────────────────────────────
+     1. Download your MP3, rename it: wedding-bgm.mp3
+     2. Drop it in the same folder as index.html
+     3. That's it — it plays when the wax seal is tapped
+     ─────────────────────────────────────────────────
+     Your VS Code screenshot confirms wedding-bgm.mp3 is
+     already in the right place. No code change needed.
+════════════════════════════════════════════════════ -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="wedding-bgm.mp3" type="audio/mpeg">
+</audio>
 
-  <!-- Soft ambient sparkle canvas (only on envelope screen) -->
+<!-- Mute button — shown after envelope closes -->
+<button id="muteBtn" aria-label="Toggle music">🔊</button>
+
+<!-- ═══════════════════════════════════════════════════
+     GRAND IVORY ENVELOPE OVERLAY
+════════════════════════════════════════════════════ -->
+<div id="envelopeScreen">
   <canvas id="ambientCanvas"></canvas>
 
-  <div id="envelopeWrap">
+  <div id="envelopeStage">
 
-    <!-- ── The 3D Envelope ────────────────────────────── -->
+    <!-- ────────────── THE ENVELOPE ────────────── -->
     <div id="envelope">
 
-      <!-- Back V-flap (bottom triangle) — always shows -->
-      <div class="env-back-flap"></div>
+      <!-- Ivory body (the front face of the envelope) -->
+      <div id="envBody">
+        <!-- Double gold border frame -->
+        <div class="env-frame-outer"></div>
+        <div class="env-frame-inner"></div>
 
-      <!-- Left side triangle -->
-      <div class="env-side env-side-left"></div>
+        <!-- Floral corner ornaments (SVG) -->
+        <svg class="corner-svg c-tl" viewBox="0 0 40 40"><path d="M2,38 Q20,2 38,2" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.6"/><circle cx="4" cy="36" r="2" fill="#C9A84C" opacity="0.5"/><circle cx="36" cy="4" r="2" fill="#C9A84C" opacity="0.5"/></svg>
+        <svg class="corner-svg c-tr" viewBox="0 0 40 40" style="transform:scaleX(-1)"><path d="M2,38 Q20,2 38,2" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.6"/><circle cx="4" cy="36" r="2" fill="#C9A84C" opacity="0.5"/><circle cx="36" cy="4" r="2" fill="#C9A84C" opacity="0.5"/></svg>
+        <svg class="corner-svg c-bl" viewBox="0 0 40 40" style="transform:scaleY(-1)"><path d="M2,38 Q20,2 38,2" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.6"/><circle cx="4" cy="36" r="2" fill="#C9A84C" opacity="0.5"/><circle cx="36" cy="4" r="2" fill="#C9A84C" opacity="0.5"/></svg>
+        <svg class="corner-svg c-br" viewBox="0 0 40 40" style="transform:scale(-1,-1)"><path d="M2,38 Q20,2 38,2" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.6"/><circle cx="4" cy="36" r="2" fill="#C9A84C" opacity="0.5"/><circle cx="36" cy="4" r="2" fill="#C9A84C" opacity="0.5"/></svg>
 
-      <!-- Right side triangle -->
-      <div class="env-side env-side-right"></div>
-
-      <!-- Letter card that peeks up from inside -->
-      <div id="envLetter">
-        <p class="el-cross">✝</p>
-        <p class="el-script">Raj ♥ Jency</p>
-        <p class="el-date">18 · 05 · 2026</p>
-        <p class="el-small">Wedding Invitation</p>
+        <!-- Centre text on envelope body -->
+        <div id="envBodyText">
+          <p class="ebt-tag">✦ Wedding Invitation ✦</p>
+          <p class="ebt-excl">This invitation is<br>exclusively for you</p>
+        </div>
       </div>
 
-      <!-- Top flap — hinges open (perspective + rotateX) -->
-      <div id="envFlapTop">
-        <!-- Wax seal sits at the fold crease -->
-        <div id="waxSeal">
-          <div class="seal-ring"></div>
-          <span class="seal-text">R♥J</span>
+      <!-- Back V-flap (always behind everything) -->
+      <div id="envBackFlap"></div>
+
+      <!-- Side triangles -->
+      <div class="env-side env-side-l"></div>
+      <div class="env-side env-side-r"></div>
+
+      <!-- Letter with couple photo — slides up on open -->
+      <div id="envLetter">
+        <img
+          id="couplePhoto"
+          src="Raj-Jancy-wedding-invitation-SVT.jpg"
+          alt="Raj and Jency"
+          onerror="this.style.display='none'; document.getElementById('letterFallback').style.display='flex';"
+        >
+        <!-- Shows if image not found -->
+        <div id="letterFallback">
+          <p class="lf-cross">✝</p>
+          <p class="lf-names">Raj ♥ Jency</p>
+          <p class="lf-date">18 · 05 · 2026</p>
+          <p class="lf-tag">Wedding Invitation</p>
         </div>
+      </div>
+
+      <!-- Top flap — hinges open backward in 3D -->
+      <div id="envFlapTop">
+        <!-- Gold fold-line along crease -->
+        <div class="flap-crease"></div>
+        <!-- NOTE: Wax seal is intentionally OUTSIDE this div.
+             clip-path on #envFlapTop would hide anything placed inside
+             that falls outside the triangle polygon. -->
+      </div>
+
+      <!-- ████  GRAND WAX SEAL  ████
+           Sits directly inside #envelope (NOT inside #envFlapTop)
+           so it is never clipped. Positioned at the flap fold crease. -->
+      <div id="waxSealWrap">
+        <canvas id="sealCanvas" width="110" height="110"></canvas>
       </div>
 
     </div><!-- /#envelope -->
 
     <!-- Tap instruction -->
     <div id="tapHint">
-      <span class="tap-label">Tap to Open</span>
-      <span class="tap-icon">✉</span>
+      <span class="tap-finger">👆</span>
+      <p class="tap-text">Tap the seal to open</p>
     </div>
 
-  </div><!-- /#envelopeWrap -->
-
+  </div><!-- /#envelopeStage -->
 </div><!-- /#envelopeScreen -->
 
-<!-- Audio — browser requires a user gesture before play.
-     The envelope tap is that gesture. -->
-<audio id="bgMusic" loop preload="auto">
-  <source src="wedding-bgm.mp3" type="audio/mpeg">
-</audio>
-
-<!-- Mute / Unmute floating button — only visible after envelope closes -->
-<button id="muteBtn" aria-label="Toggle music" title="Mute / Unmute">🔊</button>
-
-<!-- ══════════════════════════════════════════════════════
-     MAIN INVITATION (behind envelope overlay)
-═══════════════════════════════════════════════════════ -->
-
+<!-- ═══════════════════════════════════════════════════
+     MAIN INVITATION (7 swipe-up slides)
+════════════════════════════════════════════════════ -->
 <canvas id="petalCanvas"></canvas>
 
 <nav class="progress-nav" id="progressNav">
   <div class="dot active" data-slide="0"></div>
-  <div class="dot" data-slide="1"></div>
-  <div class="dot" data-slide="2"></div>
-  <div class="dot" data-slide="3"></div>
-  <div class="dot" data-slide="4"></div>
-  <div class="dot" data-slide="5"></div>
-  <div class="dot" data-slide="6"></div>
+  <div class="dot"        data-slide="1"></div>
+  <div class="dot"        data-slide="2"></div>
+  <div class="dot"        data-slide="3"></div>
+  <div class="dot"        data-slide="4"></div>
+  <div class="dot"        data-slide="5"></div>
+  <div class="dot"        data-slide="6"></div>
 </nav>
 
-<div class="scroll-container" id="scrollContainer">
+<main class="scroll-container" id="scrollContainer">
 
   <!-- SLIDE 1 — COVER -->
   <section class="slide" id="s0">
-    <div class="glow g1"></div>
-    <div class="glow g2"></div>
+    <div class="glow g1"></div><div class="glow g2"></div>
     <div class="content cover-content">
       <p class="cover-cross">✝</p>
       <p class="grace-line">By the Grace of the Almighty God</p>
@@ -114,10 +171,7 @@
         <p class="day-text">Monday</p>
       </div>
     </div>
-    <div class="swipe-hint">
-      <span>Swipe Up</span>
-      <span class="sh-arrow">↓</span>
-    </div>
+    <div class="swipe-hint"><span>Swipe Up</span><span class="sh-arrow">↓</span></div>
   </section>
 
   <!-- SLIDE 2 — INVITATION -->
@@ -133,16 +187,14 @@
       <div class="parents-row">
         <div class="parent-col">
           <p class="pcol-tag">Groom's Parents</p>
-          <p class="pcol-name">S. Elias</p>
-          <p class="pcol-amp">&amp;</p>
+          <p class="pcol-name">S. Elias</p><p class="pcol-amp">&amp;</p>
           <p class="pcol-name">Smt. Susai Mary</p>
           <p class="pcol-loc">Eraiyur</p>
         </div>
         <div class="pcol-vline"></div>
         <div class="parent-col">
           <p class="pcol-tag">Bride's Parents</p>
-          <p class="pcol-name">C. Raj</p>
-          <p class="pcol-amp">&amp;</p>
+          <p class="pcol-name">C. Raj</p><p class="pcol-amp">&amp;</p>
           <p class="pcol-name">Smt. Sagayamary</p>
           <p class="pcol-loc">Eraiyur</p>
         </div>
@@ -183,18 +235,12 @@
         <p class="vc-loc">Eraiyur, Kallakurichi District</p>
         <div class="vc-sep"></div>
         <div class="td-grid">
-          <div class="td-col">
-            <span class="td-label">Date</span>
-            <span class="td-val">Monday, 18th May 2026</span>
-          </div>
+          <div class="td-col"><span class="td-label">Date</span><span class="td-val">Monday, 18th May 2026</span></div>
           <div class="td-vline"></div>
-          <div class="td-col">
-            <span class="td-label">Time</span>
-            <span class="td-val">4:30 AM — 6:00 AM</span>
-          </div>
+          <div class="td-col"><span class="td-label">Time</span><span class="td-val">4:30 AM — 6:00 AM</span></div>
         </div>
       </div>
-      <div class="venue-card recep">
+      <div class="venue-card">
         <span class="vc-icon">🏡</span>
         <h3 class="vc-name">Reception &amp; Banquet</h3>
         <p class="vc-loc">Bridegroom's Home, Poondi Road, Eraiyur</p>
@@ -211,26 +257,11 @@
       <h2 class="script-title">Solemnized By</h2>
       <p class="clergy-intro">The Mass &amp; Wedding Ceremony will be conducted by <strong>Rev. Fr. S. Joseph Sahayaraju, Tindivanam</strong> at Holy Rosary Church, Eraiyur</p>
       <div class="clergy-list">
-        <div class="clergy-item">
-          <span class="ci-name">Rev. Fr. S. Palraj</span>
-          <span class="ci-role">P.P &amp; V.F.</span>
-        </div>
-        <div class="clergy-item">
-          <span class="ci-name">Rev. Fr. L. Joseph Raj</span>
-          <span class="ci-role">Principal</span>
-        </div>
-        <div class="clergy-item">
-          <span class="ci-name">Rev. Fr. A. Thomas Berna</span>
-          <span class="ci-role">A.PP</span>
-        </div>
-        <div class="clergy-item">
-          <span class="ci-name">Rev. Fr. P. Chinnappan</span>
-          <span class="ci-role">Vice Principal, Petit Seminary, Pondy</span>
-        </div>
-        <div class="clergy-item highlight-ci">
-          <span class="ci-name">Rev. Fr. S. Joseph Sahayaraju</span>
-          <span class="ci-role">Tindivanam · <em>Officiating</em></span>
-        </div>
+        <div class="clergy-item"><span class="ci-name">Rev. Fr. S. Palraj</span><span class="ci-role">P.P &amp; V.F.</span></div>
+        <div class="clergy-item"><span class="ci-name">Rev. Fr. L. Joseph Raj</span><span class="ci-role">Principal</span></div>
+        <div class="clergy-item"><span class="ci-name">Rev. Fr. A. Thomas Berna</span><span class="ci-role">A.PP</span></div>
+        <div class="clergy-item"><span class="ci-name">Rev. Fr. P. Chinnappan</span><span class="ci-role">Vice Principal, Petit Seminary</span></div>
+        <div class="clergy-item highlight-ci"><span class="ci-name">Rev. Fr. S. Joseph Sahayaraju</span><span class="ci-role">Tindivanam · <em>Officiating</em></span></div>
       </div>
     </div>
   </section>
@@ -243,36 +274,16 @@
       <div class="fam-grid">
         <div class="fam-col">
           <p class="fam-title">Groom's Household</p>
-          <div class="fe">
-            <p class="fe-role">Grandparents</p>
-            <p class="fe-name">(Late) Zacharias &amp; (Late) Paranjyoti</p>
-            <p class="fe-name">V.M. Aruldas &amp; Mariyasaram, Eraiyur</p>
-          </div>
-          <div class="fe">
-            <p class="fe-role">Brother</p>
-            <p class="fe-name">E. Leo Francis, BA, BL</p>
-          </div>
-          <div class="fe">
-            <p class="fe-role">Sister</p>
-            <p class="fe-name">A. Sophia Mary, Eraiyur</p>
-          </div>
+          <div class="fe"><p class="fe-role">Grandparents</p><p class="fe-name">(Late) Zacharias &amp; Paranjyoti</p><p class="fe-name">V.M. Aruldas &amp; Mariyasaram</p></div>
+          <div class="fe"><p class="fe-role">Brother</p><p class="fe-name">E. Leo Francis, BA, BL</p></div>
+          <div class="fe"><p class="fe-role">Sister</p><p class="fe-name">A. Sophia Mary, Eraiyur</p></div>
         </div>
         <div class="fam-vline"></div>
         <div class="fam-col">
           <p class="fam-title">Bride's Household</p>
-          <div class="fe">
-            <p class="fe-role">Grandparents</p>
-            <p class="fe-name">C. Daniel-D. Amalaroja, Eraiyur</p>
-            <p class="fe-name">C. Anthoniswamy M.A. &amp; Sheela Mary</p>
-          </div>
-          <div class="fe">
-            <p class="fe-role">Uncle</p>
-            <p class="fe-name">C. Anthonysamy (Ex Army) &amp; A. Pabiola Mary</p>
-          </div>
-          <div class="fe">
-            <p class="fe-role">Aunt-Uncle</p>
-            <p class="fe-name">R. Selvanathan &amp; Leela Mary, Memalur</p>
-          </div>
+          <div class="fe"><p class="fe-role">Grandparents</p><p class="fe-name">C. Daniel-D. Amalaroja</p><p class="fe-name">C. Anthoniswamy M.A. &amp; Sheela Mary</p></div>
+          <div class="fe"><p class="fe-role">Uncle</p><p class="fe-name">C. Anthonysamy (Ex Army) &amp; A. Pabiola Mary</p></div>
+          <div class="fe"><p class="fe-role">Aunt-Uncle</p><p class="fe-name">R. Selvanathan &amp; Leela Mary, Memalur</p></div>
         </div>
       </div>
     </div>
@@ -304,8 +315,7 @@
     </div>
   </section>
 
-</div><!-- /scroll-container -->
-
+</main>
 <script src="script.js"></script>
 </body>
 </html>
