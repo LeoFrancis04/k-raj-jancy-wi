@@ -12,10 +12,74 @@
 </head>
 <body>
 
-<!-- Floating Petals Canvas -->
+<!-- ══════════════════════════════════════════════════════
+     ENVELOPE OVERLAY  (shown first, removed after tap)
+     NOTE: This MUST be before the main content so z-index
+     stacking works correctly on all browsers.
+═══════════════════════════════════════════════════════ -->
+<div id="envelopeScreen">
+
+  <!-- Soft ambient sparkle canvas (only on envelope screen) -->
+  <canvas id="ambientCanvas"></canvas>
+
+  <div id="envelopeWrap">
+
+    <!-- ── The 3D Envelope ────────────────────────────── -->
+    <div id="envelope">
+
+      <!-- Back V-flap (bottom triangle) — always shows -->
+      <div class="env-back-flap"></div>
+
+      <!-- Left side triangle -->
+      <div class="env-side env-side-left"></div>
+
+      <!-- Right side triangle -->
+      <div class="env-side env-side-right"></div>
+
+      <!-- Letter card that peeks up from inside -->
+      <div id="envLetter">
+        <p class="el-cross">✝</p>
+        <p class="el-script">Raj ♥ Jency</p>
+        <p class="el-date">18 · 05 · 2026</p>
+        <p class="el-small">Wedding Invitation</p>
+      </div>
+
+      <!-- Top flap — hinges open (perspective + rotateX) -->
+      <div id="envFlapTop">
+        <!-- Wax seal sits at the fold crease -->
+        <div id="waxSeal">
+          <div class="seal-ring"></div>
+          <span class="seal-text">R♥J</span>
+        </div>
+      </div>
+
+    </div><!-- /#envelope -->
+
+    <!-- Tap instruction -->
+    <div id="tapHint">
+      <span class="tap-label">Tap to Open</span>
+      <span class="tap-icon">✉</span>
+    </div>
+
+  </div><!-- /#envelopeWrap -->
+
+</div><!-- /#envelopeScreen -->
+
+<!-- Audio — browser requires a user gesture before play.
+     The envelope tap is that gesture. -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="wedding-bgm.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Mute / Unmute floating button — only visible after envelope closes -->
+<button id="muteBtn" aria-label="Toggle music" title="Mute / Unmute">🔊</button>
+
+<!-- ══════════════════════════════════════════════════════
+     MAIN INVITATION (behind envelope overlay)
+═══════════════════════════════════════════════════════ -->
+
 <canvas id="petalCanvas"></canvas>
 
-<!-- Slide Progress Dots -->
 <nav class="progress-nav" id="progressNav">
   <div class="dot active" data-slide="0"></div>
   <div class="dot" data-slide="1"></div>
@@ -28,9 +92,7 @@
 
 <div class="scroll-container" id="scrollContainer">
 
-  <!-- ═══════════════════════════════════
-       SLIDE 1 — COVER
-  ═══════════════════════════════════ -->
+  <!-- SLIDE 1 — COVER -->
   <section class="slide" id="s0">
     <div class="glow g1"></div>
     <div class="glow g2"></div>
@@ -58,9 +120,7 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════
-       SLIDE 2 — INVITATION
-  ═══════════════════════════════════ -->
+  <!-- SLIDE 2 — INVITATION -->
   <section class="slide" id="s1">
     <div class="glow g3"></div>
     <div class="content reveal">
@@ -74,7 +134,7 @@
         <div class="parent-col">
           <p class="pcol-tag">Groom's Parents</p>
           <p class="pcol-name">S. Elias</p>
-          <p class="pcol-amp">&</p>
+          <p class="pcol-amp">&amp;</p>
           <p class="pcol-name">Smt. Susai Mary</p>
           <p class="pcol-loc">Eraiyur</p>
         </div>
@@ -82,7 +142,7 @@
         <div class="parent-col">
           <p class="pcol-tag">Bride's Parents</p>
           <p class="pcol-name">C. Raj</p>
-          <p class="pcol-amp">&</p>
+          <p class="pcol-amp">&amp;</p>
           <p class="pcol-name">Smt. Sagayamary</p>
           <p class="pcol-loc">Eraiyur</p>
         </div>
@@ -90,9 +150,7 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════
-       SLIDE 3 — THE COUPLE
-  ═══════════════════════════════════ -->
+  <!-- SLIDE 3 — THE COUPLE -->
   <section class="slide" id="s2">
     <div class="glow g4"></div>
     <div class="content reveal">
@@ -101,21 +159,19 @@
         <span class="role-tag">Groom</span>
         <h3 class="person-name">E. Kulandai Raj</h3>
         <p class="person-quals">Diploma (F.B) · Camp Dubai</p>
-        <p class="person-lineage">Son of S. Elias & Smt. Susai Mary<br>Mantri Family, Eraiyur</p>
+        <p class="person-lineage">Son of S. Elias &amp; Smt. Susai Mary<br>Mantri Family, Eraiyur</p>
       </div>
       <div class="heart-conn">♥</div>
       <div class="person-card">
         <span class="role-tag bride-role">Bride</span>
         <h3 class="person-name">J. Jency</h3>
         <p class="person-quals">B.Sc.</p>
-        <p class="person-lineage">Daughter of C. Raj & Smt. Sagayamary<br>Koilpillai Family, Eraiyur</p>
+        <p class="person-lineage">Daughter of C. Raj &amp; Smt. Sagayamary<br>Koilpillai Family, Eraiyur</p>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════
-       SLIDE 4 — CEREMONY & VENUE
-  ═══════════════════════════════════ -->
+  <!-- SLIDE 4 — CEREMONY -->
   <section class="slide" id="s3">
     <div class="glow g1"></div>
     <div class="content reveal">
@@ -140,26 +196,24 @@
       </div>
       <div class="venue-card recep">
         <span class="vc-icon">🏡</span>
-        <h3 class="vc-name">Reception & Banquet</h3>
+        <h3 class="vc-name">Reception &amp; Banquet</h3>
         <p class="vc-loc">Bridegroom's Home, Poondi Road, Eraiyur</p>
         <p class="recep-note">Please join us to celebrate and bless the newlyweds</p>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════
-       SLIDE 5 — SOLEMNIZED BY
-  ═══════════════════════════════════ -->
+  <!-- SLIDE 5 — CLERGY -->
   <section class="slide" id="s4">
     <div class="glow g2"></div>
     <div class="content reveal">
       <p class="ornament">✝</p>
       <h2 class="script-title">Solemnized By</h2>
-      <p class="clergy-intro">The Mass & Wedding Ceremony will be conducted by <strong>Rev. Fr. S. Joseph Sahayaraju, Tindivanam</strong> at Holy Rosary Church, Eraiyur</p>
+      <p class="clergy-intro">The Mass &amp; Wedding Ceremony will be conducted by <strong>Rev. Fr. S. Joseph Sahayaraju, Tindivanam</strong> at Holy Rosary Church, Eraiyur</p>
       <div class="clergy-list">
         <div class="clergy-item">
           <span class="ci-name">Rev. Fr. S. Palraj</span>
-          <span class="ci-role">P.P & V.F.</span>
+          <span class="ci-role">P.P &amp; V.F.</span>
         </div>
         <div class="clergy-item">
           <span class="ci-name">Rev. Fr. L. Joseph Raj</span>
@@ -171,7 +225,7 @@
         </div>
         <div class="clergy-item">
           <span class="ci-name">Rev. Fr. P. Chinnappan</span>
-          <span class="ci-role">Vice Principal<br>Petit Seminary, Pondy</span>
+          <span class="ci-role">Vice Principal, Petit Seminary, Pondy</span>
         </div>
         <div class="clergy-item highlight-ci">
           <span class="ci-name">Rev. Fr. S. Joseph Sahayaraju</span>
@@ -181,9 +235,7 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════
-       SLIDE 6 — FAMILY BLESSINGS
-  ═══════════════════════════════════ -->
+  <!-- SLIDE 6 — FAMILY -->
   <section class="slide" id="s5">
     <div class="glow g3"></div>
     <div class="content reveal">
@@ -211,11 +263,11 @@
           <div class="fe">
             <p class="fe-role">Grandparents</p>
             <p class="fe-name">C. Daniel-D. Amalaroja, Eraiyur</p>
-            <p class="fe-name">C. Anthoniswamy M.A. &amp; Sheela Mary M.Sc, B.Ed</p>
+            <p class="fe-name">C. Anthoniswamy M.A. &amp; Sheela Mary</p>
           </div>
           <div class="fe">
             <p class="fe-role">Uncle</p>
-            <p class="fe-name">C. Anthonysamy (Ex Army) &amp; A. Pabiola Mary, Eraiyur</p>
+            <p class="fe-name">C. Anthonysamy (Ex Army) &amp; A. Pabiola Mary</p>
           </div>
           <div class="fe">
             <p class="fe-role">Aunt-Uncle</p>
@@ -226,9 +278,7 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════
-       SLIDE 7 — CLOSING / RSVP
-  ═══════════════════════════════════ -->
+  <!-- SLIDE 7 — CLOSING -->
   <section class="slide" id="s6">
     <div class="glow g4"></div>
     <div class="content reveal">
@@ -254,7 +304,8 @@
     </div>
   </section>
 
-</div>
+</div><!-- /scroll-container -->
+
 <script src="script.js"></script>
 </body>
 </html>
